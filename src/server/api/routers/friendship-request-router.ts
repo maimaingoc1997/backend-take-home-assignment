@@ -79,21 +79,7 @@ export const friendshipRequestRouter = router({
        * scenario for Question 3
        *  - Run `yarn test` to verify your answer
        */
-      // await ctx.db
-      //   .deleteFrom('friendships')
-      //   .where('userId', '=', ctx.session.userId)
-      //   .where('friendUserId', '=', input.friendUserId)
-      //   .where('status', '<>', FriendshipStatusSchema.Values['requested'])
-      //   .execute()
-
-      // return ctx.db
-      //   .insertInto('friendships')
-      //   .values({
-      //     userId: ctx.session.userId,
-      //     friendUserId: input.friendUserId,
-      //     status: FriendshipStatusSchema.Values['requested'],
-      //   })
-      //   .execute()
+     
       const existingFriendship = await ctx.db
       .selectFrom('friendships')
       .where('userId', '=', ctx.session.userId)
@@ -148,23 +134,7 @@ export const friendshipRequestRouter = router({
          *  - https://kysely-org.github.io/kysely/classes/Kysely.html#updateTable
          */
 
-        // await ctx.db
-        //   .updateTable('friendships')
-        //   .where('userId', '=', ctx.session.userId)
-        //   .where('friendUserId', '=', input.friendUserId)
-        //   .set({
-        //     status: FriendshipStatusSchema.Values['requested'],
-        //   })
-        //   .execute()
-
-        // return await ctx.db
-        //   .insertInto('friendships')
-        //   .values({
-        //     userId: input.friendUserId,
-        //     friendUserId: ctx.session.userId,
-        //     status: FriendshipStatusSchema.Values['requested'],
-        //   })
-        //   .execute()
+       
         // 1. Update the existing friendship request to 'accepted'
         await t
         .updateTable('friendships')
@@ -182,14 +152,14 @@ export const friendshipRequestRouter = router({
         .executeTakeFirst();
 
       if (reverseFriendship) {
-        // If it exists, update it
+        
         await t
           .updateTable('friendships')
           .set({ status: FriendshipStatusSchema.Values['accepted'] })
           .where('id', '=', reverseFriendship.id)
           .execute();
       } else {
-        // If it doesn't exist, create it
+       
         await t
           .insertInto('friendships')
           .values({
